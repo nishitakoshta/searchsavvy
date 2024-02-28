@@ -1,4 +1,5 @@
 package com.personal.searchsavvy.dto;
+import com.personal.searchsavvy.enums.CategoryEnum;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -12,7 +13,7 @@ import java.time.LocalDateTime;
 public class BlogDTO {
     private Integer blogId;
     private String blogTitle;
-    private String blogCategory;
+    private CategoryEnum blogCategory;
     private String tagLine;
     private String blogContent;
     private String thumbnail;

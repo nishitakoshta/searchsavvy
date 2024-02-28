@@ -1,4 +1,5 @@
 package com.personal.searchsavvy.entity;
+import com.personal.searchsavvy.enums.CategoryEnum;
 import jakarta.persistence.*;
 import lombok.*;
 import org.hibernate.annotations.CreationTimestamp;
@@ -18,7 +19,7 @@ public class Blogs {
     @Column(name = "blog_title", nullable = false)
     private String blogTitle;
     @Column(name = "blog_category", nullable = false)
-    private String blogCategory;
+    private Integer blogCategory;
     @Column(name = "created_on", columnDefinition = "TIMESTAMP DEFAULT '2024-01-22 00:00:01'")
     @CreationTimestamp
     private LocalDateTime createdOn;

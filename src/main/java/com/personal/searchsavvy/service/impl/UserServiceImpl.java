@@ -37,10 +37,8 @@ public class UserServiceImpl implements UserService {
                     .createdOn(user.getCreatedOn())
                     .updatedOn(user.getUpdatedOn())
                     .build();
-        } catch (DataIntegrityViolationException ex) {
-            throw ex;
         } catch (Exception ex) {
-            throw new RuntimeException("An error occurred while adding a user", ex);
+            throw ex;
         }
     }
     @Override

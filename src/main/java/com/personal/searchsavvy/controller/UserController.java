@@ -21,7 +21,7 @@ public class UserController {
             throw e;
         }
     }
-    @PutMapping("/{userId}")
+    @PutMapping
     public ResponseEntity<?> updateUser(@RequestBody UserDTO userDTO, @RequestParam int userId){
         try {
             UserDTO responseDTO = userService.updateUser(userDTO, userId);
@@ -31,15 +31,6 @@ public class UserController {
         }
     }
     @GetMapping
-    public ResponseEntity<?> getAllUser(){
-        try {
-            List<UserDTO> userList = userService.getAllUsers();
-            return ResponseEntity.status(HttpStatus.OK).body(userList);
-        }catch (Exception e){
-            throw e;
-        }
-    }
-    @GetMapping("/{userId}")
     public ResponseEntity<?> getUserById(@RequestParam int userId){
         try {
             UserDTO responseDTO = userService.getUserById(userId);
