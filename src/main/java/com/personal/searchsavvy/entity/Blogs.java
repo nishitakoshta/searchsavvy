@@ -16,7 +16,7 @@ public class Blogs {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "blog_id")
     private int blogId;
-    @Column(name = "blog_title", nullable = false)
+    @Column(name = "blog_title", nullable = false, length = 1000)
     private String blogTitle;
     @Column(name = "blog_category", nullable = false)
     private Integer blogCategory;
@@ -26,9 +26,9 @@ public class Blogs {
     @Column(name = "updated_on", columnDefinition = "TIMESTAMP DEFAULT '2024-01-22 00:00:01'")
     @UpdateTimestamp
     private LocalDateTime updatedOn;
-    @Column(name = "tag_line", nullable = false)
+    @Column(name = "tag_line", nullable = false,length = 1000)
     private String tagLine;
-    @Column(name = "blog_content", nullable = false)
+    @Column(name = "blog_content", nullable = false,length = 4000)
     private String blogContent;
     @Column(name = "thumbnail")
     private String thumbnail;
