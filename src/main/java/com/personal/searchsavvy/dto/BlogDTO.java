@@ -19,4 +19,5 @@ public class BlogDTO {
     private String thumbnail;
     private LocalDateTime createdOn;
     private LocalDateTime updatedOn;
+    private Double score;
 }

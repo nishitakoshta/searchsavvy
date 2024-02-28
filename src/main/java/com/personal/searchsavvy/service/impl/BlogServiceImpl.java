@@ -49,6 +49,10 @@ public class BlogServiceImpl implements BlogService {
             List<String> blogCategory = blogList.stream()
                     .map(blogs -> String.valueOf(CategoryEnum.values()[blog.getBlogCategory()]))
                     .toList();
+            Users user = usersRepository.findById(userId)
+                    .orElseThrow(() -> new EntityNotFoundException("User not found with user id "+userId));
+            blog.setUser(user);
+            blogRepository.save(blog);
             Map<String, Double> blogContentScore = tfIdfService.calculateTFIDF(blog.getBlogContent(), blogContent != null ? blogContent : Collections.singletonList(blogDTO.getBlogContent()));
             tfIdfService.saveTFIDFScores(blogContentScore, "content", blog.getBlogId());
             Map<String, Double> blogTagLineScore = tfIdfService.calculateTFIDF(blog.getTagLine(), tagLineList != null ? tagLineList : Collections.singletonList(blogDTO.getTagLine()));
@@ -57,10 +61,6 @@ public class BlogServiceImpl implements BlogService {
             tfIdfService.saveTFIDFScores(blogTitleScore, "title", blog.getBlogId());
             Map<String, Double> blogCategoryScore = tfIdfService.calculateTFIDF(String.valueOf(blogDTO.getBlogCategory()), blogCategory != null ? blogCategory : Collections.singletonList(String.valueOf(blogDTO.getBlogCategory().ordinal())));
             tfIdfService.saveTFIDFScores(blogCategoryScore, "category", blog.getBlogId());
-            Users user = usersRepository.findById(userId)
-                    .orElseThrow(() -> new EntityNotFoundException("User not found with user id "+userId));
-            blog.setUser(user);
-            blogRepository.save(blog);
             return BlogDTO.builder()
                     .blogId(blog.getBlogId())
                     .blogTitle(blog.getBlogTitle())

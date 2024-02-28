@@ -3,7 +3,9 @@ import jakarta.persistence.EntityNotFoundException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.validation.ConstraintViolation;
 import jakarta.validation.ConstraintViolationException;
+import org.apache.commons.lang3.exception.ExceptionUtils;
 import org.springframework.dao.DataIntegrityViolationException;
+import org.springframework.dao.InvalidDataAccessResourceUsageException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.MissingServletRequestParameterException;
@@ -51,5 +53,19 @@ public class GlobalExceptionHandler {
         Map<String, Object> message = new HashMap<>();
         message.put("Error", "Required request parameter '" + ex.getParameterName() + "' for method parameter type " + ex.getParameterType() + " is not present.");
         return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(message);
+    }
+    @ExceptionHandler(value = {InvalidDataAccessResourceUsageException.class})
+    public ResponseEntity<Map<String, Object>> handleInvalidDataAccessResourceUsageException(InvalidDataAccessResourceUsageException ex) {
+        Map<String, Object> message = new HashMap<>();
+        // Extract the specific cause of the exception
+        Throwable rootCause = ExceptionUtils.getRootCause(ex);
+        // Modify the error message based on the specific cause
+        if (rootCause != null) {
+            String errorMessage = rootCause.getMessage();
+            message.put("Error", "Invalid data access resource usage: " + errorMessage);
+        } else {
+            message.put("Error", "Invalid data access resource usage");
+        }
+        return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(message);
     }
 }
