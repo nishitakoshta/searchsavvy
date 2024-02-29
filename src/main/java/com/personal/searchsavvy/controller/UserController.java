@@ -21,7 +21,7 @@ public class UserController {
             throw e;
         }
     }
-    @PutMapping
+    @PutMapping("/{userId}")
     public ResponseEntity<?> updateUser(@RequestBody UserDTO userDTO, @RequestParam int userId){
         try {
             UserDTO responseDTO = userService.updateUser(userDTO, userId);
@@ -30,7 +30,7 @@ public class UserController {
             throw e;
         }
     }
-    @GetMapping
+    @GetMapping("/{userId}")
     public ResponseEntity<?> getUserById(@RequestParam int userId){
         try {
             UserDTO responseDTO = userService.getUserById(userId);

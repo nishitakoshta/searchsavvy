@@ -27,10 +27,10 @@ public class BlogController {
             throw e;
         }
     }
-    @PutMapping
-    public ResponseEntity<?> updateBlog(@RequestBody BlogDTO blogDTO,@RequestParam int blogId,  @RequestParam int userId){
+    @PutMapping("/{blogId}")
+    public ResponseEntity<?> updateBlog(@RequestBody BlogDTO blogDTO, @RequestParam int blogId){
         try {
-            BlogDTO responseDTO = blogService.updateBlog(blogDTO, blogId, userId);
+            BlogDTO responseDTO = blogService.updateBlog(blogDTO, blogId);
             return ResponseEntity.status(HttpStatus.OK).body(responseDTO);
         }catch (Exception e){
             throw e;

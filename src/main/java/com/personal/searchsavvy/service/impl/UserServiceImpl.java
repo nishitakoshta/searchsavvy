@@ -88,7 +88,6 @@ public class UserServiceImpl implements UserService {
             user.setUserAge(userDTO.getUserAge());
             user.setUserMobile(userDTO.getUserMobile());
             user.setUserEmail(userDTO.getUserEmail());
-            user.setCreatedOn(user.getCreatedOn());
             user.setUpdatedOn(LocalDateTime.now());
             usersRepository.save(user);
             return UserDTO.builder()

@@ -76,7 +76,7 @@ public class BlogServiceImpl implements BlogService {
         }
     }
     @Override
-    public BlogDTO updateBlog(BlogDTO blogDTO, int blogId, int userId){
+    public BlogDTO updateBlog(BlogDTO blogDTO, int blogId){
         try{
             Blogs blog = blogRepository.findById(blogId)
                             .orElseThrow(()-> new EntityNotFoundException("Blog not found with blog id "+blogId));
@@ -85,11 +85,8 @@ public class BlogServiceImpl implements BlogService {
             blog.setTagLine(blogDTO.getTagLine());
             blog.setBlogContent(blogDTO.getBlogContent());
             blog.setThumbnail(blogDTO.getThumbnail());
-            blog.setCreatedOn(LocalDateTime.now());
             blog.setUpdatedOn(LocalDateTime.now());
-            Users user = usersRepository.findById(userId)
-                    .orElseThrow(() -> new EntityNotFoundException("User not found with user id "+userId));
-            blog.setUser(user);
+            blog.setUser(blog.getUser());
             blogRepository.save(blog);
             return BlogDTO.builder()
                     .blogId(blog.getBlogId())
