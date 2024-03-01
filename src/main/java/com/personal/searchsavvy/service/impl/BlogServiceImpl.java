@@ -87,7 +87,28 @@ public class BlogServiceImpl implements BlogService {
             blog.setThumbnail(blogDTO.getThumbnail());
             blog.setUpdatedOn(LocalDateTime.now());
             blog.setUser(blog.getUser());
+            List<Blogs> blogList = blogRepository.findAll();
+            List<String> blogContent = blogList.stream()
+                    .map(Blogs::getBlogContent)
+                    .toList();
+            List<String> tagLineList = blogList.stream()
+                    .map(Blogs::getTagLine)
+                    .toList();
+            List<String> blogTitle = blogList.stream()
+                    .map(Blogs::getBlogTitle)
+                    .toList();
+            List<String> blogCategory = blogList.stream()
+                    .map(blogs -> String.valueOf(CategoryEnum.values()[blog.getBlogCategory()]))
+                    .toList();
             blogRepository.save(blog);
+            Map<String, Double> blogContentScore = tfIdfService.calculateTFIDF(blog.getBlogContent(), blogContent != null ? blogContent : Collections.singletonList(blogDTO.getBlogContent()));
+            tfIdfService.saveTFIDFScores(blogContentScore, "content", blog.getBlogId());
+            Map<String, Double> blogTagLineScore = tfIdfService.calculateTFIDF(blog.getTagLine(), tagLineList != null ? tagLineList : Collections.singletonList(blogDTO.getTagLine()));
+            tfIdfService.saveTFIDFScores(blogTagLineScore, "tagLine", blog.getBlogId());
+            Map<String, Double> blogTitleScore = tfIdfService.calculateTFIDF(blog.getBlogTitle(), blogTitle != null ? blogTitle : Collections.singletonList(blogDTO.getBlogTitle()));
+            tfIdfService.saveTFIDFScores(blogTitleScore, "title", blog.getBlogId());
+            Map<String, Double> blogCategoryScore = tfIdfService.calculateTFIDF(String.valueOf(blogDTO.getBlogCategory()), blogCategory != null ? blogCategory : Collections.singletonList(String.valueOf(blogDTO.getBlogCategory().ordinal())));
+            tfIdfService.saveTFIDFScores(blogCategoryScore, "category", blog.getBlogId());
             return BlogDTO.builder()
                     .blogId(blog.getBlogId())
                     .blogTitle(blog.getBlogTitle())
